@@ -1,9 +1,10 @@
-﻿<Application x:Class="MvvmCross.Platforms.Wpf.ItemsViewPresenter.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:MvvmCross.Platforms.Wpf.ItemsViewPresenter"
-             StartupUri="MainWindow.xaml">
+﻿<mvx:MvxApplication x:Class="MvvmCross.Platforms.Wpf.ItemsPresenter.Demo.App"
+                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:local="clr-namespace:MvvmCross.Platforms.Wpf.ItemsPresenter.Demo"
+                     xmlns:mvx="clr-namespace:MvvmCross.Platforms.Wpf.Views;assembly=MvvmCross.Platforms.Wpf"
+                     StartupUri="MainWindow.xaml">
     <Application.Resources>
          
     </Application.Resources>
-</Application>
+</mvx:MvxApplication>

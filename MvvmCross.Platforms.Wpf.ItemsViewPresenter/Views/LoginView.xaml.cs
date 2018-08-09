@@ -13,16 +13,20 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace MvvmCross.Platforms.Wpf.ItemsPresenter.Demo
+namespace MvvmCross.Platforms.Wpf.ItemsPresenter.Demo.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for LoginView.xaml
     /// </summary>
-    public partial class MainWindow
+    public partial class LoginView
     {
-        public MainWindow()
+        public LoginView()
         {
             InitializeComponent();
+        }
+        private void Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current?.Shutdown();
         }
     }
 }

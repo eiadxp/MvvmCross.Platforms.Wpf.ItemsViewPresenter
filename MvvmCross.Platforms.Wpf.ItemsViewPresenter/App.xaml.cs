@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using MvvmCross.Core;
 
-namespace MvvmCross.Platforms.Wpf.ItemsViewPresenter
+namespace MvvmCross.Platforms.Wpf.ItemsPresenter.Demo
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
-    public partial class App : Application
+    public partial class App
     {
+        protected override void RegisterSetup()
+        {
+            this.RegisterSetupType<MvxWpfSetup<Core.App>>();
+        }
     }
 }

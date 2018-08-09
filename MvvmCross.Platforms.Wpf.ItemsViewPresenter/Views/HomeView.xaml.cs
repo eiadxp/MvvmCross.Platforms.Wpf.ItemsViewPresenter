@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace MvvmCross.Platforms.Wpf.ItemsPresenter.Demo
+namespace MvvmCross.Platforms.Wpf.ItemsPresenter.Demo.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for HomeView.xaml
     /// </summary>
-    public partial class MainWindow
+    public partial class HomeView
     {
-        public MainWindow()
+        public HomeView()
         {
             InitializeComponent();
         }

@@ -1,0 +1,62 @@
+﻿<view:MvxWpfView x:Class="MvvmCross.Platforms.Wpf.ItemsPresenter.Demo.Views.HomeView"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                 xmlns:view="clr-namespace:MvvmCross.Platforms.Wpf.Views;assembly=MvvmCross.Platforms.Wpf"
+                 xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                 xmlns:mvxItems="clr-namespace:MvvmCross.Platforms.Wpf.ItemsPresenter;assembly=MvvmCross.Platforms.Wpf.ItemsPresenter"
+                 xmlns:mvx="clr-namespace:MvvmCross.Platforms.Wpf.ItemsPresenter;assembly=MvvmCross.Platforms.Wpf.ItemsPresenter"
+                 xmlns:commands="clr-namespace:MvvmCross.Platforms.Wpf.ItemsPresenter.Commands;assembly=MvvmCross.Platforms.Wpf.ItemsPresenter"
+                 mc:Ignorable="d" d:DesignHeight="450" d:DesignWidth="800">
+    <view:MvxWpfView.Resources>
+        <Style TargetType="TabItem">
+            <Setter Property="HeaderTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <DockPanel LastChildFill="True">
+                            <Button Content="X" DockPanel.Dock="Right" Margin="5,0" Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0" Foreground="Red" FontWeight="Bold" CommandParameter="{Binding Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabItem}}}">
+                                <Button.Command>
+                                    <commands:MvxCloseHolderCommand/>
+                                </Button.Command>
+                            </Button>
+                            <ContentControl Content="{Binding}"/>
+                        </DockPanel>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </view:MvxWpfView.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+        <ToolBar Grid.ColumnSpan="2">
+            <Button Content="Back" CommandParameter="docs">
+                <Button.Command>
+                    <commands:mvxBackCommand />
+                </Button.Command>
+            </Button>
+            <Separator/>
+            <Button Content="First View" Command="{Binding FirstCommand}"/>
+            <Button Content="Second View" Command="{Binding SecondCommand}"/>
+            <Button Content="Third View" Command="{Binding ThirdCommand}"/>
+            <Separator/>
+            <TextBlock Text="User Id:" VerticalAlignment="Center"/>
+            <ComboBox x:Name="cmbId" MinWidth="50" SelectedIndex="0">
+                <sys:Int32>1</sys:Int32>
+                <sys:Int32>2</sys:Int32>
+                <sys:Int32>3</sys:Int32>
+                <sys:Int32>4</sys:Int32>
+            </ComboBox>
+            <Button Content="Open User" Command="{Binding UserCommand}" CommandParameter="{Binding SelectedItem, ElementName=cmbId}"/>
+        </ToolBar>
+        <TabControl Grid.Column="1" Grid.Row="1" mvx:MvxContainer.Id="docs"/>
+        <ListBox Grid.Column="0" Grid.Row="1" mvx:MvxContainer.Id="users" mvx:MvxContainer.ViewHolder="{x:Type Expander}" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
+    </Grid>
+</view:MvxWpfView>

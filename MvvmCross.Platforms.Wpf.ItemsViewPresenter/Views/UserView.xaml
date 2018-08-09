@@ -1,0 +1,15 @@
+﻿<view:MvxWpfView x:Class="MvvmCross.Platforms.Wpf.ItemsPresenter.Demo.Views.UserView"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                 xmlns:local="clr-namespace:MvvmCross.Platforms.Wpf.ItemsPresenter.Demo.Views"
+                 xmlns:view="clr-namespace:MvvmCross.Platforms.Wpf.Views;assembly=MvvmCross.Platforms.Wpf"
+                 xmlns:mvx="clr-namespace:MvvmCross.Platforms.Wpf.ItemsPresenter;assembly=MvvmCross.Platforms.Wpf.ItemsPresenter"
+                 mc:Ignorable="d" mvx:MvxContainer.Header="{Binding Name}">
+    <TextBlock FontSize="36" FontWeight="Bold" TextWrapping="Wrap">
+        <Run>This is view for "</Run>
+        <Run Text="{Binding Name,Mode=OneWay}" FontStyle="Italic" TextDecorations="Underline"/>
+        <Run>"</Run>
+    </TextBlock>
+</view:MvxWpfView>
