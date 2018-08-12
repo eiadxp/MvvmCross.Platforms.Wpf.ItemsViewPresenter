@@ -5,7 +5,6 @@
                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
                  xmlns:view="clr-namespace:MvvmCross.Platforms.Wpf.Views;assembly=MvvmCross.Platforms.Wpf"
                  xmlns:sys="clr-namespace:System;assembly=mscorlib"
-                 xmlns:mvxItems="clr-namespace:MvvmCross.Platforms.Wpf.ItemsPresenter;assembly=MvvmCross.Platforms.Wpf.ItemsPresenter"
                  xmlns:mvx="clr-namespace:MvvmCross.Platforms.Wpf.ItemsPresenter;assembly=MvvmCross.Platforms.Wpf.ItemsPresenter"
                  xmlns:commands="clr-namespace:MvvmCross.Platforms.Wpf.ItemsPresenter.Commands;assembly=MvvmCross.Platforms.Wpf.ItemsPresenter"
                  mc:Ignorable="d" d:DesignHeight="450" d:DesignWidth="800">
