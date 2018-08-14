@@ -1,31 +1,32 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Linq;
-using System.Threading.Tasks;
-using MvvmCross.Presenters;
-using MvvmCross.Navigation;
 
 namespace MvvmCross.Platforms.Wpf.ItemsPresenter.Commands
 {
     /// <summary>
-    /// This class is a command to close a holder with all its views.
+    /// This class is a command to close the last view in a holder.
     /// </summary>
     /// <remarks>
-    /// <para>You don not need to create this class, just use the static property <see cref="MvxWpfPresenter.CloseHolderCommand"/> instead,
+    /// <para>You don not need to create this class, just use the static property <see cref="MvxWpfPresenter.CloseViewCommand"/> instead,
     ///  the class behaviour is controled by the command parameter.</para>
     ///  <para>If the command parameter is a <see cref="ItemsControl"/> the command will get the selected holder
     ///   or the last holder in the items and close the last open view in it.</para>
     ///  <para>If the command parameter is a <see cref="string"/>, the class will search for a container with 
     ///  same id, and if it found it it will perform the same previous procedure for it.</para>
-    ///  <para>If the command parameter is a <see cref="ContentControl"/> the command will close all the views 
-    ///  in the navigation stack of that holder and then remove the holder from the container.</para>
+    ///  <para>If the command parameter is a <see cref="ContentControl"/> the command will close the last 
+    ///  view inside the nacigation stack.</para>
+    ///  <para>If there is no views remaining in the navigation stack, the holder will be removed from the
+    ///  container.</para>
     /// </remarks>
-    public class MvxCloseHolderCommand : MvvmCross.Commands.IMvxCommand
+    public class MvxCloseViewCommand : MvvmCross.Commands.IMvxCommand
     {
         public event EventHandler CanExecuteChanged;
-
         /// <summary>
         /// Returns false always, because we should specify a holder or container.
         /// </summary>
@@ -45,13 +46,13 @@ namespace MvvmCross.Platforms.Wpf.ItemsPresenter.Commands
         {
             try
             {
-                var holder = MvxCloseViewCommand.GetHolder(parameter);
+                var holder = GetHolder(parameter);
                 if (holder == null) return true;
                 return !MvxContainer.GetHasClosingAction(holder);
             }
             catch (Exception)
             {
-
+                
             }
             return true;
         }
@@ -60,11 +61,10 @@ namespace MvvmCross.Platforms.Wpf.ItemsPresenter.Commands
         /// </summary>
         public void Execute()
         {
-            throw new InvalidOperationException("You should pass the holder in command parameter.");
+            throw new InvalidOperationException("A container must be passed in the parameter.");
         }
-
         /// <summary>
-        /// Execute a close command on a holder.
+        /// Execute a back command on a holder.
         /// </summary>
         /// <param name="parameter">
         /// Could be a container id (<c>string</c>), container (<see cref="ItemsControl"/>), or holder (<see cref="ContentControl"/>).
@@ -74,27 +74,41 @@ namespace MvvmCross.Platforms.Wpf.ItemsPresenter.Commands
         /// and if the parameter is <see cref="ItemsControl"/> it will use it as a container.
         /// In both cases the command will get the selected holder in the container (if it is a <see cref="Selector"/>)
         /// or it will use the last holder in the items collection.
-        /// The close command is will close all the views in the holder navigation stack.
+        /// The back command is actually a close command for the last view in the holder.
         /// </remarks>
-        public async void Execute(object parameter)
+        public void Execute(object parameter)
         {
-            var holder = MvxCloseViewCommand.GetHolder(parameter);
-            if (holder == null) throw new InvalidCastException("Command parameter should be a content control.");
-            var history = MvxContainer.GetHolderHistory(holder);
-            if (history != null)
-            {
-                MvxContainer.SetHasClosingAction(holder, true);
-                RaiseCanExecuteChanged();
-                var nav = Mvx.Resolve<IMvxNavigationService>();
-                foreach (var mv in history.Select((c) => MvxWpfPresenter.GetViewModel(c)).ToList())
-                {
-                    await nav.Close(mv);
-                }
-                MvxContainer.SetHasClosingAction(holder, false);
-                RaiseCanExecuteChanged();
-            }
+            var holder = GetHolder(parameter);
+            if (holder == null) return;
+            var view = holder.Content as FrameworkElement;
+            if (view == null) return;
+            object vm = null;
+            if (view is MvvmCross.Views.IMvxView mvxv) vm = mvxv.ViewModel;
+            if (vm == null) vm = view.DataContext;
+            if (vm == null) return;
+            MvxContainer.SetHasClosingAction(holder, true);
+            RaiseCanExecuteChanged();
+            var nav = Mvx.Resolve<Navigation.IMvxNavigationService>();
+            nav.Close(vm as ViewModels.IMvxViewModel);
+            MvxContainer.SetHasClosingAction(holder, false);
+            RaiseCanExecuteChanged();
         }
-
+        internal static ContentControl GetHolder(object parameter)
+        {
+            var container = parameter as ItemsControl;
+            ContentControl holder = null;
+            if (container == null && parameter is string id)
+                container = MvxContainer.GetContainerById(id);
+            if (container != null && container.Items.Count > 0)
+            {
+                if (container is Selector selector)
+                    holder = selector.SelectedItem as ContentControl;
+                holder = container.Items[container.Items.Count - 1] as ContentControl;
+            }
+            if (holder == null)
+                holder = parameter as ContentControl;
+            return holder;
+        }
         public void RaiseCanExecuteChanged()
         {
             CanExecuteChanged?.Invoke(this, EventArgs.Empty);

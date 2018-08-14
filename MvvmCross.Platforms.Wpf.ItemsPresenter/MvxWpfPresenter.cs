@@ -1,10 +1,11 @@
-﻿using MvvmCross.Logging;
+﻿using MvvmCross.Platforms.Wpf.ItemsPresenter.Commands;
 using MvvmCross.Platforms.Wpf.Presenters;
 using MvvmCross.Platforms.Wpf.Presenters.Attributes;
 using MvvmCross.Platforms.Wpf.Views;
 using MvvmCross.Presenters;
 using MvvmCross.Presenters.Attributes;
 using MvvmCross.ViewModels;
+using MvvmCross.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,8 @@ namespace MvvmCross.Platforms.Wpf.ItemsPresenter
 
         public MvxWpfPresenter() : this(Application.Current?.MainWindow) { }
         public MvxWpfPresenter(ContentControl root) : base(root) => Root = root;
+        public static IMvxCommand CloseHolderCommand { get; } = new MvxCloseHolderCommand();
+        public static IMvxCommand CloseViewCommand { get; } = new MvxCloseViewCommand();
 
         /// <summary>
         /// First rgister <see cref="MvxWpfPresenterAttribute"/> in addition to the original MvvmCross attributes.
@@ -99,9 +102,11 @@ namespace MvvmCross.Platforms.Wpf.ItemsPresenter
         {
             ContentControl holder = null;
             var viewModel = (request as MvxViewModelInstanceRequest)?.ViewModelInstance;
+            var viewId = attribute?.ViewId(viewModel);
             foreach (var item in container.Items.OfType<ContentControl>())
             {
-                if (attribute?.ViewId(viewModel) == MvxWpfPresenterAttribute.GetViewId(item.Content as FrameworkElement, request))
+                var view = item.Content as FrameworkElement;
+                if (viewId == MvxWpfPresenterAttribute.GetViewId(view, request))
                 {
                     holder = item;
                     break;
@@ -110,7 +115,7 @@ namespace MvvmCross.Platforms.Wpf.ItemsPresenter
             if (holder != null)
             {
                 if (container is Selector selector) selector.SelectedItem = holder;
-                else holder.BringIntoView();
+                holder.BringIntoView();
             }
             else
             {
@@ -121,12 +126,13 @@ namespace MvvmCross.Platforms.Wpf.ItemsPresenter
         {
             ContentControl holder = null;
             var viewModel = (request as MvxViewModelInstanceRequest)?.ViewModelInstance;
+            var viewId = attribute?.ViewId(viewModel);
             foreach (var item in container.Items.OfType<ContentControl>())
             {
                 var history = MvxContainer.GetHolderHistory(item);
                 foreach (var view in history)
                 {
-                    if (attribute?.ViewId(viewModel) == MvxWpfPresenterAttribute.GetViewId(view, request))
+                    if (viewId == MvxWpfPresenterAttribute.GetViewId(view, request))
                     {
                         holder = item;
                         break;
@@ -136,7 +142,7 @@ namespace MvvmCross.Platforms.Wpf.ItemsPresenter
             if (holder != null)
             {
                 if (container is Selector selector) selector.SelectedItem = holder;
-                else holder.BringIntoView();
+                holder.BringIntoView();
             }
             else
             {

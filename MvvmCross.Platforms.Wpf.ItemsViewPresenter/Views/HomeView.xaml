@@ -14,11 +14,10 @@
                 <Setter.Value>
                     <DataTemplate>
                         <DockPanel LastChildFill="True">
-                            <Button Content="X" DockPanel.Dock="Right" Margin="5,0" Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0" Foreground="Red" FontWeight="Bold" CommandParameter="{Binding Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabItem}}}">
-                                <Button.Command>
-                                    <commands:MvxCloseHolderCommand/>
-                                </Button.Command>
-                            </Button>
+                            <Button Content="X" DockPanel.Dock="Right" Margin="5,0" Background="{x:Null}" 
+                                    BorderBrush="{x:Null}" BorderThickness="0" Foreground="Red" FontWeight="Bold" 
+                                    CommandParameter="{Binding Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabItem}}}"
+                                    Command="{x:Static mvx:MvxWpfPresenter.CloseHolderCommand}"/>
                             <ContentControl Content="{Binding}"/>
                         </DockPanel>
                     </DataTemplate>
@@ -36,11 +35,7 @@
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
         <ToolBar Grid.ColumnSpan="2">
-            <Button Content="Back" CommandParameter="docs">
-                <Button.Command>
-                    <commands:mvxBackCommand />
-                </Button.Command>
-            </Button>
+            <Button Content="Back" CommandParameter="docs" Command="{x:Static mvx:MvxWpfPresenter.CloseViewCommand}"/>
             <Separator/>
             <Button Content="First View" Command="{Binding FirstCommand}"/>
             <Button Content="Second View" Command="{Binding SecondCommand}"/>

@@ -3,13 +3,13 @@ A simple library for MvvmCross that will enable the using of ItemsControls to ho
 
 # Terms:
 ## Container:
-It is the an ItemsControl that will host your views. You can have multiple containers, but each one should be registerd in a unique name using attached property `MvxContainer.Id` in your container. If you registered more than one container with the same Id, the last one will be used. You should specify your container id of the views in the attribute `MvxWpfPresenterAttribute` in the code behind file.
+It is the an ItemsControl that will host your views. You can have multiple containers, but each one should be registered in a unique name using attached property `MvxContainer.Id` in your container. If you registered more than one container with the same Id, the last one will be used. You should specify your container id of the views in the attribute `MvxWpfPresenterAttribute` in the code behind file.
 ## Holder:
 It is a ContentControl that will host your view inside the container. If your container is TabControl, the holder will be a TabItem, otherwise it will be a ContentControl. You can change this by using the attached property `mvx:MvxContainer.ViewHolder` on the container, you can set this property to the your holder type.
 ## Holder Header:
 You can set your holder header by using the attached property `MvxContainer.Header` in the root of your view. If your holder supports headers (`HeaderedContentControl`) the presenter will bind the attached property `MvxContainer.Header` to the holder header.
 ## View ID:
-Each view will have a string Id to enable the presenter from searching the views. The Id is calculated in the `MvxWpfPresenterAttribute.ViewId` function which will take a ViewModel as parameter and returns a string Id. the default impelmantation of this method is to return the view model `ToString()` function. This means that if did not override this method in your view model, the presenter will return any view that has the same view model type as your view model. you can change this be eather overrides the `ToString()` methods in your view model, or by providing a `ViewId` function in your view attribute `MvxWpfPresenterAttribute`.
+Each view will have a string Id to enable the presenter from searching the views. The Id is calculated in the `MvxWpfPresenterAttribute.ViewId` function which will take a ViewModel as parameter and returns a string Id. the default implementation of this method is to return the view model `ToString()` function. This means that if did not override this method in your view model, the presenter will return any view that has the same view model type as your view model. you can change this be either overrides the `ToString()` methods in your view model, or by providing a `ViewId` function in your view attribute `MvxWpfPresenterAttribute`.
 ## View position:
 You can set the way your view will be displayed in the attribute `MvxWpfPresenterAttribute` in the code behind file. You can choose one of the following values:
  1. **New**:
@@ -41,7 +41,7 @@ public class MySetup : Core.MvxWpfSetup<App>
     }
 }
 ```
-2. Our presenter is based on MvvmCross presenter `MvxWpfViewPresenter` which means that you can use the content and window views of the MvvmCross normaly. When you need to use ItemsControl presentation, you should register an ItemsControl as a container using the attached property `MvxContainer.Id`. You can also use the attached property `MvxContainer.ViewHolder` to set the holder type of your view. In the following code we registered a TabControl with Id "docs" and we kept the default holder type (`TabItem`), we also registered a ListBox as a container with id "users" and set the holder type to `Expander`, so all the views inside this container will be placed in an `Expander` control:
+2. Our presenter is based on MvvmCross presenter `MvxWpfViewPresenter` which means that you can use the content and window views of the MvvmCross normally. When you need to use ItemsControl presentation, you should register an ItemsControl as a container using the attached property `MvxContainer.Id`. You can also use the attached property `MvxContainer.ViewHolder` to set the holder type of your view. In the following code we registered a TabControl with Id "docs" and we kept the default holder type (`TabItem`), we also registered a ListBox as a container with id "users" and set the holder type to `Expander`, so all the views inside this container will be placed in an `Expander` control:
 ```XAML
 <view:MvxWpfView x:Class="MvvmCross.Platforms.Wpf.ItemsPresenter.Demo.Views.HomeView"
                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -58,7 +58,7 @@ public class MySetup : Core.MvxWpfSetup<App>
     </Grid>
 </view:MvxWpfView>
 ```
-3. Create your views as you normaly do with MvvmCross.
+3. Create your views as you normally do with MvvmCross.
 4. You can use the attached property `MvxContainer.Header` in your view to set the holder header if your it supports headers (based on `HeaderedContentControl` like `TabItem` or `Expander`):
 ```XAML
 <view:MvxWpfView x:Name="mvxWpfView" x:Class="MvvmCross.Platforms.Wpf.ItemsPresenter.Demo.Views.FirstView"
@@ -83,3 +83,17 @@ public partial class FirstView
     }
 }
 ```
+
+# Navigation stack:
+When ever you show a view in an existed holder the new view will be pushed to the navigation stack in front of the old one. so when you close a view, the navigation stack will pop the last view out and bring the previous one to front, then it will this view.
+
+# GUI Commands:
+The `MvxWpfPresenter` contains two static commands to be used directly in your GUI:
+
+1. `MvxWpfPresenter.CloseViewCommand`: This command will close last view in a holder, bring the previous view from the navigation stack, and may remove the holder from its container if there is no remaining views in the navigation stack.
+2. `MvxWpfPresenter.CloseHolderCommand`: This command will close all the views in a holder, and remove the holder from its container.
+
+Both commands use the command parameter to specify the target holder. The command parameter could be:
+1. The holder to be used.
+2. A container, and here the command will get the selected holder if available (Your container is a `Selector` class), or it will use the last holder in the container items.
+3. A container id (`string`), and the command will get the container which is registered by that id and continue as descried above.

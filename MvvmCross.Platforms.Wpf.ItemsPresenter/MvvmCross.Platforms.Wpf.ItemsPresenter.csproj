@@ -57,7 +57,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\mvxBackCommand.cs" />
+    <Compile Include="Commands\MvxCloseViewCommand.cs" />
     <Compile Include="Commands\MvxCloseHolderCommand.cs" />
     <Compile Include="MvxContainer.cs" />
     <Compile Include="mvxViewPosition.cs" />
