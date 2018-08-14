@@ -1,5 +1,5 @@
 ﻿using System;
-using MvvmCross.Platforms.Wpf.Presenters.Attributes;
+using MvvmCross.Presenters.Attributes;
 using System.Windows;
 using System.Linq;
 using MvvmCross.ViewModels;
@@ -7,7 +7,7 @@ using MvvmCross.ViewModels;
 namespace MvvmCross.Platforms.Wpf.ItemsPresenter
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public class MvxWpfPresenterAttribute : MvxContentPresentationAttribute
+    public class MvxWpfPresenterAttribute : MvxBasePresentationAttribute
     {
         public mvxViewPosition ViewPosition { get; set; }
         public string ContainerId { get; set; }

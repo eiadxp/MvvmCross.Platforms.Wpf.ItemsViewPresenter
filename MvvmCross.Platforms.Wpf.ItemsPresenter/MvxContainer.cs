@@ -9,6 +9,9 @@ using MvvmCross.Platforms.Wpf.Presenters;
 
 namespace MvvmCross.Platforms.Wpf.ItemsPresenter
 {
+    /// <summary>
+    /// Helper class to create containers. It also define attached properties.
+    /// </summary>
     public class MvxContainer
     {
         static readonly Dictionary<string, WeakReference<ItemsControl>> containers = new Dictionary<string, WeakReference<ItemsControl>>();
@@ -63,10 +66,10 @@ namespace MvvmCross.Platforms.Wpf.ItemsPresenter
             }
         }
 
-        public static Type GetViewHolder(DependencyObject obj) => (Type)obj.GetValue(ViewHolderProperty);
-        public static void SetViewHolder(DependencyObject obj, Type value) => obj.SetValue(ViewHolderProperty, value);
-        public static readonly DependencyProperty ViewHolderProperty =
-            DependencyProperty.RegisterAttached("ViewHolder", typeof(Type), typeof(MvxContainer), 
+        public static Type GetHolderType(DependencyObject obj) => (Type)obj.GetValue(HolderTypeProperty);
+        public static void SetHolderType(DependencyObject obj, Type value) => obj.SetValue(HolderTypeProperty, value);
+        public static readonly DependencyProperty HolderTypeProperty =
+            DependencyProperty.RegisterAttached("HolderType", typeof(Type), typeof(MvxContainer), 
                 new PropertyMetadata(null));
 
         public static object GetHeader(DependencyObject obj) => obj.GetValue(HeaderProperty);

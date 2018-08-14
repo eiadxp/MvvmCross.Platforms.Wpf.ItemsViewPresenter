@@ -51,6 +51,6 @@
             <Button Content="Open User" Command="{Binding UserCommand}" CommandParameter="{Binding SelectedItem, ElementName=cmbId}"/>
         </ToolBar>
         <TabControl Grid.Column="1" Grid.Row="1" mvx:MvxContainer.Id="docs"/>
-        <ListBox Grid.Column="0" Grid.Row="1" mvx:MvxContainer.Id="users" mvx:MvxContainer.ViewHolder="{x:Type Expander}" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
+        <ListBox Grid.Column="0" Grid.Row="1" mvx:MvxContainer.Id="users" mvx:MvxContainer.HolderType="{x:Type Expander}" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
     </Grid>
 </view:MvxWpfView>

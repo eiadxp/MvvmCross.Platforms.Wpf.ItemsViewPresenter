@@ -5,7 +5,7 @@ A simple library for MvvmCross that will enable the using of ItemsControls to ho
 ## Container:
 It is the an ItemsControl that will host your views. You can have multiple containers, but each one should be registered in a unique name using attached property `MvxContainer.Id` in your container. If you registered more than one container with the same Id, the last one will be used. You should specify your container id of the views in the attribute `MvxWpfPresenterAttribute` in the code behind file.
 ## Holder:
-It is a ContentControl that will host your view inside the container. If your container is TabControl, the holder will be a TabItem, otherwise it will be a ContentControl. You can change this by using the attached property `mvx:MvxContainer.ViewHolder` on the container, you can set this property to the your holder type.
+It is a ContentControl that will host your view inside the container. If your container is TabControl, the holder will be a TabItem, otherwise it will be a ContentControl. You can change this by using the attached property `mvx:MvxContainer.HolderType` on the container, you can set this property to the your holder type.
 ## Holder Header:
 You can set your holder header by using the attached property `MvxContainer.Header` in the root of your view. If your holder supports headers (`HeaderedContentControl`) the presenter will bind the attached property `MvxContainer.Header` to the holder header.
 ## View ID:
@@ -41,7 +41,7 @@ public class MySetup : Core.MvxWpfSetup<App>
     }
 }
 ```
-2. Our presenter is based on MvvmCross presenter `MvxWpfViewPresenter` which means that you can use the content and window views of the MvvmCross normally. When you need to use ItemsControl presentation, you should register an ItemsControl as a container using the attached property `MvxContainer.Id`. You can also use the attached property `MvxContainer.ViewHolder` to set the holder type of your view. In the following code we registered a TabControl with Id "docs" and we kept the default holder type (`TabItem`), we also registered a ListBox as a container with id "users" and set the holder type to `Expander`, so all the views inside this container will be placed in an `Expander` control:
+2. Our presenter is based on MvvmCross presenter `MvxWpfViewPresenter` which means that you can use the content and window views of the MvvmCross normally. When you need to use ItemsControl presentation, you should register an ItemsControl as a container using the attached property `MvxContainer.Id`. You can also use the attached property `MvxContainer.HolderType` to set the holder type of your view. In the following code we registered a TabControl with Id "docs" and we kept the default holder type (`TabItem`), we also registered a ListBox as a container with id "users" and set the holder type to `Expander`, so all the views inside this container will be placed in an `Expander` control:
 ```XAML
 <view:MvxWpfView x:Class="MvvmCross.Platforms.Wpf.ItemsPresenter.Demo.Views.HomeView"
                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -54,7 +54,7 @@ public class MySetup : Core.MvxWpfSetup<App>
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
         <TabControl mvx:MvxContainer.Id="docs"/>
-        <ListBox Grid.Column="1" mvx:MvxContainer.Id="users" mvx:MvxContainer.ViewHolder="{x:Type Expander}"/>
+        <ListBox Grid.Column="1" mvx:MvxContainer.Id="users" mvx:MvxContainer.HolderType="{x:Type Expander}"/>
     </Grid>
 </view:MvxWpfView>
 ```

@@ -211,7 +211,7 @@ namespace MvvmCross.Platforms.Wpf.ItemsPresenter
 
         ContentControl CreateViewHolder(ItemsControl container)
         {
-            var t = MvxContainer.GetViewHolder(container);
+            var t = MvxContainer.GetHolderType(container);
             ContentControl holder;
             if (container is TabControl tabControl)
             {

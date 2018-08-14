@@ -14,13 +14,13 @@ namespace MvvmCross.Platforms.Wpf.ItemsPresenter.Commands
     /// </summary>
     /// <remarks>
     /// <para>You don not need to create this class, just use the static property <see cref="MvxWpfPresenter.CloseViewCommand"/> instead,
-    ///  the class behaviour is controled by the command parameter.</para>
+    ///  the class behavior is controlled by the command parameter.</para>
     ///  <para>If the command parameter is a <see cref="ItemsControl"/> the command will get the selected holder
     ///   or the last holder in the items and close the last open view in it.</para>
     ///  <para>If the command parameter is a <see cref="string"/>, the class will search for a container with 
-    ///  same id, and if it found it it will perform the same previous procedure for it.</para>
+    ///  same id, and if it found it will perform the same previous procedure for it.</para>
     ///  <para>If the command parameter is a <see cref="ContentControl"/> the command will close the last 
-    ///  view inside the nacigation stack.</para>
+    ///  view inside the navigation stack.</para>
     ///  <para>If there is no views remaining in the navigation stack, the holder will be removed from the
     ///  container.</para>
     /// </remarks>
